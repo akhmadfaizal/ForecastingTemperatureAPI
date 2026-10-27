@@ -1,0 +1,57 @@
+{
+  "status": "PASSED",
+  "reference_device": "PC CPU",
+  "target": "Active A1 Node to native Mac CPU",
+  "atol_celsius": 0.0001,
+  "original_gpu_reference_status": "FAILED_RETAINED",
+  "reports": [
+    {
+      "model": "LSTM",
+      "horizon_minutes": 60,
+      "pc_cpu": 27.648649215698242,
+      "mac_native_cpu": 27.648651,
+      "max_abs_celsius": 1.7843017587892973e-06,
+      "passed": true
+    },
+    {
+      "model": "LSTM",
+      "horizon_minutes": 120,
+      "pc_cpu": 28.444049835205078,
+      "mac_native_cpu": 28.44405,
+      "max_abs_celsius": 1.6479492259691142e-07,
+      "passed": true
+    },
+    {
+      "model": "LSTM",
+      "horizon_minutes": 180,
+      "pc_cpu": 26.75908851623535,
+      "mac_native_cpu": 26.759088,
+      "max_abs_celsius": 5.162353531318331e-07,
+      "passed": true
+    },
+    {
+      "model": "GRU",
+      "horizon_minutes": 60,
+      "pc_cpu": 27.13107681274414,
+      "mac_native_cpu": 27.131076,
+      "max_abs_celsius": 8.127441404326419e-07,
+      "passed": true
+    },
+    {
+      "model": "GRU",
+      "horizon_minutes": 120,
+      "pc_cpu": 26.895183563232422,
+      "mac_native_cpu": 26.895182,
+      "max_abs_celsius": 1.5632324235070882e-06,
+      "passed": true
+    },
+    {
+      "model": "GRU",
+      "horizon_minutes": 180,
+      "pc_cpu": 26.74991798400879,
+      "mac_native_cpu": 26.749917,
+      "max_abs_celsius": 9.840087891177518e-07,
+      "passed": true
+    }
+  ]
+}

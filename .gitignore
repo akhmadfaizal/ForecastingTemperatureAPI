@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Local environment and secrets
+.env*
+!.env.example
+!.env.development.example
+!.env.production.example
+/inference/backups/
+
+# Local deployment metadata
+.vercel/
+
+# Runtime logs and generated reports
+/logs/
+*.log
+coverage/
+.nyc_output/
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# macOS metadata
+.DS_Store
+._*

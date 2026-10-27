@@ -1,0 +1,215 @@
+{
+  "info": {
+    "_postman_id": "f7c8667f-a9de-4e90-98be-25454de72cb0",
+    "name": "Skripsi API Production",
+    "description": "Pengujian aman backend Vercel. Collection tidak menyimpan token dan tidak membuat data penelitian palsu.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Health Vercel dan Aiven",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Backend sehat', () => pm.expect(body.status).to.eql('ok'));",
+              "pm.test('Mode edge-ingest', () => pm.expect(body.mode).to.eql('edge-ingest'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02 - Enam prediksi terbaru",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "const rows = pm.response.json().predictions || [];",
+              "pm.test('Terdapat enam prediksi', () => pm.expect(rows).to.have.length(6));",
+              "const models = [...new Set(rows.map(row => row.model_name))].sort();",
+              "const horizons = [...new Set(rows.map(row => Number(row.horizon_minutes)))].sort((a, b) => a - b);",
+              "pm.test('Model LSTM dan GRU tersedia', () => pm.expect(models).to.eql(['GRU', 'LSTM']));",
+              "pm.test('Horizon 60, 120, dan 180 tersedia', () => pm.expect(horizons).to.eql([60, 120, 180]));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/predictions/latest",
+          "host": ["{{base_url}}"],
+          "path": ["api", "predictions", "latest"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "03 - Snapshot tanpa token ditolak",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));",
+              "pm.test('Penolakan otorisasi', () => pm.expect(pm.response.json().error).to.include('Otorisasi'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/snapshots",
+          "host": ["{{base_url}}"],
+          "path": ["api", "snapshots"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "04 - Replay snapshot terbaru dengan token",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const baseUrl = pm.environment.get('base_url');",
+              "const token = pm.environment.get('snapshot_ingest_token');",
+              "if (!baseUrl) throw new Error('base_url belum tersedia pada environment Postman.');",
+              "if (!token) throw new Error('snapshot_ingest_token belum diisi pada environment Postman.');",
+              "const asWib = value => {",
+              "  const text = String(value || '').trim();",
+              "  if (/([zZ]|[+-]\\d{2}:\\d{2})$/.test(text)) return text;",
+              "  return text.replace(' ', 'T') + '+07:00';",
+              "};",
+              "pm.sendRequest(`${baseUrl}/api/predictions/latest`, (predictionError, predictionResponse) => {",
+              "  if (predictionError) throw predictionError;",
+              "  if (predictionResponse.code !== 200) throw new Error(`Gagal mengambil prediksi: ${predictionResponse.code}`);",
+              "  const rows = predictionResponse.json().predictions || [];",
+              "  if (rows.length !== 6) throw new Error(`Prediksi terbaru bukan enam baris: ${rows.length}`);",
+              "  const observedRaw = rows[0].observed_at;",
+              "  if (!rows.every(row => row.observed_at === observedRaw)) throw new Error('Waktu observasi enam prediksi tidak sama.');",
+              "  pm.sendRequest(`${baseUrl}/api/readings/latest?limit=200`, (readingError, readingResponse) => {",
+              "    if (readingError) throw readingError;",
+              "    if (readingResponse.code !== 200) throw new Error(`Gagal mengambil pembacaan: ${readingResponse.code}`);",
+              "    const reading = (readingResponse.json().readings || []).find(item => item.timestamp === observedRaw);",
+              "    if (!reading) throw new Error(`Pembacaan untuk ${observedRaw} tidak ditemukan.`);",
+              "    const observedAt = asWib(observedRaw);",
+              "    const models = { LSTM: [], GRU: [] };",
+              "    const bundleStatus = {};",
+              "    for (const row of rows) {",
+              "      const model = String(row.model_name).toUpperCase();",
+              "      models[model].push({",
+              "        horizon_minutes: Number(row.horizon_minutes),",
+              "        model,",
+              "        predicted_temperature_celsius: Number(row.predicted_temperature),",
+              "        target_timestamp: asWib(row.target_at),",
+              "        above_threshold: row.above_threshold === true || Number(row.above_threshold) === 1",
+              "      });",
+              "      bundleStatus[model] = String(row.bundle_status);",
+              "    }",
+              "    const payload = {",
+              "      snapshot_id: `node-red-mini-pc:${new Date(observedAt).toISOString()}` ,",
+              "      source: 'node-red-mini-pc',",
+              "      reading: {",
+              "        timestamp: observedAt,",
+              "        temperature: Number(reading.temperature),",
+              "        humidity: Number(reading.humidity)",
+              "      },",
+              "      prediction: {",
+              "        observed_at: observedAt,",
+              "        latest_temperature_celsius: Number(reading.temperature),",
+              "        threshold_celsius: Number(rows[0].threshold_celsius),",
+              "        models,",
+              "        bundle_status: bundleStatus,",
+              "        verification_status: { LSTM: 'replay-postman', GRU: 'replay-postman' }",
+              "      }",
+              "    };",
+              "    pm.variables.set('snapshot_payload', JSON.stringify(payload));",
+              "  });",
+              "});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200 untuk replay', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Snapshot dikenali sebagai duplikat', () => pm.expect(body.duplicate).to.eql(true));",
+              "pm.test('Tidak membuat data baru', () => pm.expect(body.stored).to.eql(false));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{snapshot_ingest_token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{{snapshot_payload}}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/snapshots",
+          "host": ["{{base_url}}"],
+          "path": ["api", "snapshots"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://skripsi-temperature-api.vercel.app"
+    }
+  ]
+}

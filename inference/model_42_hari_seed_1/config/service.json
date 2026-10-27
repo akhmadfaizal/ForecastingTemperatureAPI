@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "timezone": "Asia/Jakarta",
+  "output_status": "global42_20261011_s1",
+  "scope": "Model final 42 hari global sementara; bukan training train-only baru",
+  "models": {
+    "LSTM": {
+      "enabled": true,
+      "bundle": "bundles/lstm",
+      "verification_status": "pc_cpu_mac_cpu_pass_gpu_diff"
+    },
+    "GRU": {
+      "enabled": true,
+      "bundle": "bundles/gru",
+      "verification_status": "pc_cpu_mac_cpu_pass_gpu_diff"
+    }
+  },
+  "inference_device": "CPU",
+  "historical_gpu_reference_status": "failed_tolerance_retained",
+  "cpu_reference": "provenance/cpu_portability_mac.json"
+}

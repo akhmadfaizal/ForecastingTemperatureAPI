@@ -1,0 +1,120 @@
+{
+  "passed": true,
+  "atol_celsius": 0.0001,
+  "rtol": 0,
+  "threshold_celsius": 27,
+  "reference_device": "PC CPU",
+  "device": "Mac CPU",
+  "tensorflow": "2.18.1",
+  "run_fingerprint": "7965894625c5c1989e0f2a732132eb9a0fe01bf2a6b28a9e2b5a0e561927ac56",
+  "reports": [
+    {
+      "model": "models/lstm_h60_seed1.keras",
+      "split": "val",
+      "samples": 1678,
+      "max_abs_celsius": 3.814697265625e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/lstm_h60_seed1.keras",
+      "split": "test",
+      "samples": 1804,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/gru_h60_seed1.keras",
+      "split": "val",
+      "samples": 1678,
+      "max_abs_celsius": 3.814697265625e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/gru_h60_seed1.keras",
+      "split": "test",
+      "samples": 1804,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/lstm_h120_seed1.keras",
+      "split": "val",
+      "samples": 1666,
+      "max_abs_celsius": 3.814697265625e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/lstm_h120_seed1.keras",
+      "split": "test",
+      "samples": 1792,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/gru_h120_seed1.keras",
+      "split": "val",
+      "samples": 1666,
+      "max_abs_celsius": 3.814697265625e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/gru_h120_seed1.keras",
+      "split": "test",
+      "samples": 1792,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/lstm_h180_seed1.keras",
+      "split": "val",
+      "samples": 1654,
+      "max_abs_celsius": 3.814697265625e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/lstm_h180_seed1.keras",
+      "split": "test",
+      "samples": 1780,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/gru_h180_seed1.keras",
+      "split": "val",
+      "samples": 1654,
+      "max_abs_celsius": 3.814697265625e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    },
+    {
+      "model": "models/gru_h180_seed1.keras",
+      "split": "test",
+      "samples": 1780,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "finite": true,
+      "threshold_flips": 0,
+      "passed": true
+    }
+  ]
+}

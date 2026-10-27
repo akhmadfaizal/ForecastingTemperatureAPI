@@ -1,0 +1,111 @@
+project:
+  status: pc_final_42_days_train_only_20261013
+  timezone: Asia/Jakarta
+  run_root: hasil_eksperimen
+data:
+  csv_path: 01_dataset_sumber/sensor_raw.csv
+  kolom_waktu: waktu_wib
+  kolom_target: temperature
+  kolom_kelembapan: humidity
+  mulai: '2026-08-20 00:00:00+07:00'
+  akhir_eksklusif: '2026-10-01 00:00:00+07:00'
+  toleransi_ujung_menit: 15
+  artefak_ranges:
+  - mulai_eksklusif: '2026-08-26 09:35:15.777+07:00'
+    selesai_eksklusif: '2026-08-26 13:18:40.717+07:00'
+  batas_operasi_suhu:
+  - -10.0
+  - 60.0
+  kandidat_harus_lengkap: true
+preprocessing:
+  resample: 5min
+  agregasi: mean
+  max_gap_interpolasi_menit: 15
+  lookback: 144
+  horizons:
+  - 12
+  - 24
+  - 36
+  features:
+  - temperature
+  - humidity
+  - jam_sin
+  - jam_cos
+  - hari_sin
+  - hari_cos
+  - akhir_pekan
+  split:
+    train:
+    - '2026-08-20 00:00:00+07:00'
+    - '2026-09-17 00:00:00+07:00'
+    val:
+    - '2026-09-17 00:00:00+07:00'
+    - '2026-09-24 00:00:00+07:00'
+    test:
+    - '2026-09-24 00:00:00+07:00'
+    - '2026-10-01 00:00:00+07:00'
+  scaler_fit: train_only
+model:
+  architectures:
+  - lstm
+  - gru
+  grid:
+    units:
+    - 32
+    - 64
+    - 128
+    layers:
+    - 1
+    - 2
+    dropout:
+    - 0.1
+    - 0.2
+    learning_rate:
+    - 0.001
+    - 0.0005
+    batch_size:
+    - 32
+    - 64
+  seed_tuning: 1
+  final_seeds:
+  - 1
+  - 2
+  - 3
+  epochs: 100
+  patience: 10
+  loss: mae
+  benchmark_max_hours: 12
+  benchmark_safety_factor: 1.5
+  smoke:
+    units: 32
+    layers: 1
+    dropout: 0.1
+    learning_rate: 0.001
+    batch_size: 64
+    epochs: 2
+baseline:
+  seasonal_naive_lag: 2016
+  moving_average_windows:
+  - 3
+  - 6
+  - 12
+  - 24
+  arima:
+    max_d: 2
+    max_p: 5
+    max_q: 5
+    criterion: aic
+evaluation:
+  metrics:
+  - mae
+  - rmse
+  - mape
+  threshold_celsius: 27.0
+  consecutive_alert_steps: 3
+  alert_cooldown_minutes: 60
+  alpha: 0.05
+  dm_final_seed_family: per_seed_per_horizon
+  warning_final_protocol: null
+runtime:
+  require_gpu: true
+  memory_growth: true

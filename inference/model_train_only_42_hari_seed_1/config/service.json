@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "timezone": "Asia/Jakarta",
+  "output_status": "train_only42_20261013_s1",
+  "scope": "Model train-only 42 hari; seed 1 tetap untuk deployment",
+  "models": {
+    "LSTM": {
+      "enabled": true,
+      "bundle": "bundles/lstm",
+      "verification_status": "pc_cpu_mac_cpu_pass"
+    },
+    "GRU": {
+      "enabled": true,
+      "bundle": "bundles/gru",
+      "verification_status": "pc_cpu_mac_cpu_pass"
+    }
+  },
+  "inference_device": "CPU"
+}

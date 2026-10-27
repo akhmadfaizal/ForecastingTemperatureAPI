@@ -1,0 +1,118 @@
+{
+  "status": "PASSED",
+  "atol_celsius": 0.0001,
+  "reference_device": "PC CPU",
+  "target_device": "Mac CPU",
+  "original_gpu_reference_status": "FAILED_RETAINED",
+  "tensorflow": "2.18.1",
+  "reports": [
+    {
+      "model": "lstm_h60_seed1.keras",
+      "split": "val",
+      "n": 1678,
+      "max_abs_celsius": 3.814697265625e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "lstm_h60_seed1.keras",
+      "split": "test",
+      "n": 1804,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "lstm_h120_seed1.keras",
+      "split": "val",
+      "n": 1666,
+      "max_abs_celsius": 3.814697265625e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "lstm_h120_seed1.keras",
+      "split": "test",
+      "n": 1792,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "lstm_h180_seed1.keras",
+      "split": "val",
+      "n": 1654,
+      "max_abs_celsius": 3.814697265625e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "lstm_h180_seed1.keras",
+      "split": "test",
+      "n": 1780,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "gru_h60_seed1.keras",
+      "split": "val",
+      "n": 1678,
+      "max_abs_celsius": 3.814697265625e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "gru_h60_seed1.keras",
+      "split": "test",
+      "n": 1804,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "gru_h120_seed1.keras",
+      "split": "val",
+      "n": 1666,
+      "max_abs_celsius": 3.814697265625e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "gru_h120_seed1.keras",
+      "split": "test",
+      "n": 1792,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "gru_h180_seed1.keras",
+      "split": "val",
+      "n": 1654,
+      "max_abs_celsius": 3.814697265625e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    },
+    {
+      "model": "gru_h180_seed1.keras",
+      "split": "test",
+      "n": 1780,
+      "max_abs_celsius": 1.9073486328125e-06,
+      "threshold_flips": 0,
+      "finite": true,
+      "passed": true
+    }
+  ]
+}

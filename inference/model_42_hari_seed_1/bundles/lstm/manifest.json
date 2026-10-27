@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "status": "global42_20261011_s1",
+  "created_at_utc": "2026-10-12T17:35:06.453579+00:00",
+  "timezone": "Asia/Jakarta",
+  "target": "temperature",
+  "sensor_columns": [
+    "temperature",
+    "humidity"
+  ],
+  "features": [
+    "temperature",
+    "humidity",
+    "jam_sin",
+    "jam_cos",
+    "hari_sin",
+    "hari_cos",
+    "akhir_pekan"
+  ],
+  "lookback_slots": 144,
+  "resample": "5min",
+  "resample_minutes": 5,
+  "max_gap_interpolation_minutes": 15,
+  "threshold_celsius": 27.0,
+  "run_fingerprint": "6629d693b046c73bb600e7c94607644c2135214e593b226d93f852f7b30d2f9e",
+  "scaler_fit": "fit_on_all",
+  "raw_preprocessing": {
+    "duplicate_timestamps": "keep_first",
+    "temperature_bounds_celsius": [
+      -10.0,
+      60.0
+    ],
+    "artifact_ranges": [
+      {
+        "mulai_eksklusif": "2026-08-26 09:35:15.777+07:00",
+        "selesai_eksklusif": "2026-08-26 13:18:40.717+07:00"
+      }
+    ]
+  },
+  "models": {
+    "60": {
+      "type": "LSTM",
+      "file": "models/lstm_h60_seed1.keras",
+      "horizon_slots": 12,
+      "seed": 1
+    },
+    "120": {
+      "type": "LSTM",
+      "file": "models/lstm_h120_seed1.keras",
+      "horizon_slots": 24,
+      "seed": 1
+    },
+    "180": {
+      "type": "LSTM",
+      "file": "models/lstm_h180_seed1.keras",
+      "horizon_slots": 36,
+      "seed": 1
+    }
+  },
+  "checksums_sha256": {
+    "config.yaml": "4ae57fd3321547611c3e26b3c84304a725006815b90ce196f1ad81096f3d742b",
+    "scaler.json": "83c16b8aa4a912762d6e49a07241c04cbc2a864ec183f57fadc76f742a49d134",
+    "models/lstm_h60_seed1.keras": "677e681667f1d1aec3589a796f9c08f87e60f9323ed11b52c1946740b7b29b6f",
+    "models/lstm_h180_seed1.keras": "26be1131e5d89cd7fe7c5c9881dccf2a4952b5b0b90ced0c94a2c797734500b2",
+    "models/lstm_h120_seed1.keras": "8feea23151f59ac7684bf02c97f5889394dff4417b6b91eee565b822764a3683"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "timezone": "Asia/Jakarta",
+  "output_status": "pilot_model_arsip",
+  "scope": "pilot teknis pemanggilan proses; bukan model final 42 hari",
+  "models": {
+    "LSTM": {
+      "enabled": true,
+      "bundle": "../../../Arsip/Arsip Pipeline dan Training Awal/pipeline_training_kandidat_deployment/mini_pc_inference_api/bundles/lstm_candidate",
+      "verification_status": "belum_verifikasi_numerik_mac"
+    },
+    "GRU": {
+      "enabled": true,
+      "bundle": "../../../Arsip/Arsip Pipeline dan Training Awal/pipeline_training_kandidat_deployment/mini_pc_inference_api/bundles/gru_candidate",
+      "verification_status": "belum_verifikasi_numerik_mac"
+    }
+  }
+}
